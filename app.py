@@ -59,9 +59,20 @@ if st.button("Generate Image", type="primary"):
 # Show the history gallery at the bottom
 if st.session_state.history:
     st.markdown("---")
-    st.subheader("📜 Past Creations")
     
+    # 1. Create two columns so the button sits cleanly next to the title
+    col1, col2 = st.columns([4, 1])
+    
+    with col1:
+        st.subheader("📜 Past Creations")
+        
+    with col2:
+        # 2. Add the Clear History button
+        if st.button("🗑️ Clear History", use_container_width=True):
+            st.session_state.history = []  # Reset the list to empty
+            st.rerun()                     # Refresh the UI instantly
+            
+    # 3. Render the past images
     for item in st.session_state.history:
-        # Create a clickable dropdown for past images
         with st.expander(f"{item['prompt']} - {item['style']}"):
             st.image(item['image'], use_container_width=True)
